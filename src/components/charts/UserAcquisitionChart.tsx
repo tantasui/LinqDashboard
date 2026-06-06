@@ -1,39 +1,57 @@
 import React from 'react';
 import { Line } from '@ant-design/plots';
-import { Skeleton, theme } from 'antd';
+import { MetricCard } from '../MetricCard';
 import type { UserAcquisitionPoint } from '@/types/dashboard';
 
 interface UserAcquisitionChartProps {
   data: UserAcquisitionPoint[] | null;
   isLoading: boolean;
+  error: string | null;
 }
 
-export const UserAcquisitionChart: React.FC<UserAcquisitionChartProps> = ({ data, isLoading }) => {
-  const { token } = theme.useToken();
-
-  if (isLoading) return <Skeleton active paragraph={{ rows: 8 }} />;
-
-  // Stub data — replaced with real data when LINQ-06 lands
-  const chartData = data || [
-    { date: '2026-06-01', signups: 120, channel: 'organic' },
-    { date: '2026-06-02', signups: 150, channel: 'organic' },
-    { date: '2026-06-03', signups: 140, channel: 'referral' },
-    { date: '2026-06-04', signups: 200, channel: 'paid' },
-    { date: '2026-06-05', signups: 180, channel: 'referral' },
-  ];
+export const UserAcquisitionChart: React.FC<UserAcquisitionChartProps> = ({ data, isLoading, error }) => {
+  // Transform data for G2 multi-series
+  const chartData = React.useMemo(() => {
+    if (!data) return [];
+    
+    return data.flatMap(point => [
+      { date: point.date, type: 'New Signups', value: point.new_signups },
+      { date: point.date, type: 'KYC Completions', value: point.kyc_completions }
+    ]);
+  }, [data]);
 
   const config = {
     data: chartData,
-    xField: 'date' as const,
-    yField: 'signups' as const,
-    colorField: 'channel' as const,
+    xField: 'date',
+    yField: 'value',
+    colorField: 'type',
+    seriesField: 'type',
     smooth: true,
-    height: 300,
-    color: [token.colorPrimary, token.colorSuccess, token.colorWarning],
-    legend: {
-      position: 'top' as const,
+    padding: 'auto',
+    color: ['#1677ff', '#52c41a'],
+    tooltip: {
+      showMarkers: true,
+    },
+    point: {
+      shape: 'circle',
+      size: 3,
+    },
+    interaction: {
+      tooltip: {
+        marker: false,
+      },
     },
   };
 
-  return <Line {...config} />;
+  return (
+    <MetricCard 
+      title="User Acquisition" 
+      isLoading={isLoading} 
+      error={error}
+      isEmpty={!data || data.length === 0}
+      style={{ minHeight: 300 }}
+    >
+      <Line {...config} height={300} />
+    </MetricCard>
+  );
 };

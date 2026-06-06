@@ -2,68 +2,46 @@ import api from './api';
 import { 
   OverviewMetrics, 
   UserAcquisitionPoint,
-  FunnelStage,
+  ActivationFunnelResponse,
   EngagementPoint,
   TransactionPoint,
-  CohortRetention
+  RevenuePoint,
+  RetentionSummaryResponse
 } from '@/types/dashboard';
 
-// These endpoints correspond to Phase 1 in the LINQ METRICS DASHBOARD PLAN.
-// Note: They do not exist on the backend yet, so we return null/stubs for now,
-// or we make the call and gracefully handle 404s in the components.
-
 export const dashboardService = {
-  getOverview: async (start?: string, end?: string): Promise<OverviewMetrics | null> => {
-    try {
-      const res = await api.get('/admin/dashboard/overview', { params: { start, end } });
-      return res.data;
-    } catch (e) {
-      return null;
-    }
+  getOverview: async (from?: string, to?: string): Promise<OverviewMetrics> => {
+    const res = await api.get('/admin/dashboard/overview', { params: { from, to } });
+    return res.data;
   },
 
-  getUserAcquisition: async (start?: string, end?: string): Promise<UserAcquisitionPoint[] | null> => {
-    try {
-      const res = await api.get('/admin/dashboard/users', { params: { start, end } });
-      return res.data;
-    } catch (e) {
-      return null;
-    }
+  getUserAcquisition: async (from?: string, to?: string, granularity?: string): Promise<UserAcquisitionPoint[]> => {
+    const res = await api.get('/admin/dashboard/users', { params: { from, to, granularity } });
+    return res.data;
   },
 
-  getActivationFunnel: async (start?: string, end?: string): Promise<FunnelStage[] | null> => {
-    try {
-      const res = await api.get('/admin/dashboard/activation-funnel', { params: { start, end } });
-      return res.data;
-    } catch (e) {
-      return null;
-    }
+  getActivationFunnel: async (cohort_month?: string): Promise<ActivationFunnelResponse> => {
+    const res = await api.get('/admin/dashboard/activation-funnel', { params: { cohort_month } });
+    return res.data;
   },
 
-  getEngagement: async (start?: string, end?: string): Promise<EngagementPoint[] | null> => {
-    try {
-      const res = await api.get('/admin/dashboard/engagement', { params: { start, end } });
-      return res.data;
-    } catch (e) {
-      return null;
-    }
+  getEngagement: async (from?: string, to?: string): Promise<EngagementPoint[]> => {
+    const res = await api.get('/admin/dashboard/engagement', { params: { from, to } });
+    return res.data;
   },
 
-  getTransactions: async (start?: string, end?: string): Promise<TransactionPoint[] | null> => {
-    try {
-      const res = await api.get('/admin/dashboard/transactions', { params: { start, end } });
-      return res.data;
-    } catch (e) {
-      return null;
-    }
+  getTransactions: async (from?: string, to?: string): Promise<TransactionPoint[]> => {
+    const res = await api.get('/admin/dashboard/transactions', { params: { from, to } });
+    return res.data;
   },
 
-  getRetentionSummary: async (): Promise<CohortRetention[] | null> => {
-    try {
-      const res = await api.get('/admin/dashboard/retention-summary');
-      return res.data;
-    } catch (e) {
-      return null;
-    }
+  getRevenue: async (from?: string, to?: string): Promise<RevenuePoint[]> => {
+    const res = await api.get('/admin/dashboard/revenue', { params: { from, to } });
+    return res.data;
+  },
+
+  getRetentionSummary: async (): Promise<RetentionSummaryResponse> => {
+    const res = await api.get('/admin/dashboard/retention-summary');
+    return res.data;
   }
 };

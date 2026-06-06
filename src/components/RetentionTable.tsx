@@ -1,57 +1,75 @@
 import React from 'react';
-import { Table, Skeleton } from 'antd';
+import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
+import { MetricCard } from './MetricCard';
 import { CohortRetention } from '@/types/dashboard';
+import { formatPercent, formatNumber } from '@/utils/formatMetric';
 
 interface RetentionTableProps {
   data: CohortRetention[] | null;
   isLoading: boolean;
+  error: string | null;
 }
 
-export const RetentionTable: React.FC<RetentionTableProps> = ({ data, isLoading }) => {
-  if (isLoading) {
-    return <Skeleton active paragraph={{ rows: 5 }} />;
-  }
+export const RetentionTable: React.FC<RetentionTableProps> = ({ data, isLoading, error }) => {
+  const getRetentionColor = (decimal: number) => {
+    const percent = decimal * 100;
+    if (percent >= 30) return '#00E396'; // Green
+    if (percent >= 15) return '#FEB019'; // Yellow
+    return '#FF4560'; // Red
+  };
 
   const columns: ColumnsType<CohortRetention> = [
     {
       title: 'Cohort Month',
-      dataIndex: 'cohortMonth',
-      key: 'cohortMonth',
+      dataIndex: 'cohort_month',
+      key: 'cohort_month',
     },
     {
       title: 'Size',
       dataIndex: 'size',
       key: 'size',
+      render: (val: number) => formatNumber(val),
     },
     {
       title: 'D7 Retention',
-      dataIndex: 'd7Percent',
-      key: 'd7Percent',
-      render: (val: number) => `${val.toFixed(1)}%`,
+      dataIndex: 'd7',
+      key: 'd7',
+      render: (val: number) => (
+        <Tag color={getRetentionColor(val)} style={{ color: val * 100 < 15 ? '#fff' : '#000', fontWeight: 600 }}>
+          {formatPercent(val)}
+        </Tag>
+      ),
     },
     {
       title: 'D30 Retention',
-      dataIndex: 'd30Percent',
-      key: 'd30Percent',
-      render: (val: number) => `${val.toFixed(1)}%`,
+      dataIndex: 'd30',
+      key: 'd30',
+      render: (val: number) => (
+        <Tag color={getRetentionColor(val)} style={{ color: val * 100 < 15 ? '#fff' : '#000', fontWeight: 600 }}>
+          {formatPercent(val)}
+        </Tag>
+      ),
     },
   ];
 
-  // Placeholder stub data if null
-  const tableData: CohortRetention[] = data || [
-    { key: '1', cohortMonth: '2026-05', size: 1200, d7Percent: 45.2, d30Percent: 25.1 },
-    { key: '2', cohortMonth: '2026-04', size: 980, d7Percent: 42.1, d30Percent: 23.5 },
-    { key: '3', cohortMonth: '2026-03', size: 850, d7Percent: 40.0, d30Percent: 21.0 },
-  ];
-
   return (
-    <Table
-      columns={columns}
-      dataSource={tableData}
-      pagination={false}
-      rowKey="key"
-      bordered={false}
-    />
+    <MetricCard 
+      title="Cohort Retention" 
+      isLoading={isLoading} 
+      error={error}
+      isEmpty={!data || data.length === 0}
+      style={{ minHeight: 300 }}
+    >
+      <Table
+        columns={columns}
+        dataSource={data || []}
+        pagination={false}
+        rowKey="cohort_month"
+        bordered={false}
+        size="middle"
+        scroll={{ x: 'max-content' }}
+      />
+    </MetricCard>
   );
 };
