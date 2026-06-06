@@ -22,6 +22,15 @@ export function formatUSDC(amount: number): string {
 }
 
 /**
+ * Formats a number to a compact USDC string.
+ * Example: 480000 -> "$480K"
+ */
+export function formatCompactUSDC(amount: number): string {
+  if (amount == null || isNaN(amount)) return '-';
+  return numeral(amount).format('$0.0a').toUpperCase();
+}
+
+/**
  * Formats a number compactly (e.g., 1.2M, 50K).
  */
 export function formatCompact(value: number): string {

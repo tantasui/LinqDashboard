@@ -8,7 +8,7 @@ import {
   RetweetOutlined,
 } from '@ant-design/icons';
 import type { OverviewMetrics } from '@/types/dashboard';
-import { formatPercent, formatUSDC, formatNumber } from '@/utils/formatMetric';
+import { formatPercent, formatCompactUSDC, formatCompact } from '@/utils/formatMetric';
 
 interface OverviewStatsProps {
   data: OverviewMetrics | null;
@@ -41,6 +41,8 @@ export const OverviewStats: React.FC<OverviewStatsProps> = ({ data, isLoading, e
     return <Empty description="No data available" />;
   }
 
+  const valueStyle = { fontSize: 20, whiteSpace: 'nowrap' as const };
+
   return (
     <Row gutter={[16, 16]}>
       <Col xs={24} sm={12} md={8} lg={4} style={{ flex: '1 1 auto' }}>
@@ -48,7 +50,8 @@ export const OverviewStats: React.FC<OverviewStatsProps> = ({ data, isLoading, e
           <Statistic
             title="New Signups"
             value={data.users.new_signups}
-            formatter={(val) => formatNumber(val as number)}
+            valueStyle={valueStyle}
+            formatter={(val) => formatCompact(val as number)}
             prefix={<UserAddOutlined style={{ color: token.colorPrimary }} />}
           />
         </Card>
@@ -58,7 +61,8 @@ export const OverviewStats: React.FC<OverviewStatsProps> = ({ data, isLoading, e
           <Statistic
             title="GMV"
             value={data.gmv.total_usdc}
-            formatter={(val) => formatUSDC(val as number)}
+            valueStyle={valueStyle}
+            formatter={(val) => formatCompactUSDC(val as number)}
             prefix={<DollarOutlined style={{ color: token.colorSuccess }} />}
           />
         </Card>
@@ -68,7 +72,8 @@ export const OverviewStats: React.FC<OverviewStatsProps> = ({ data, isLoading, e
           <Statistic
             title="Total Revenue"
             value={data.revenue.total_usdc}
-            formatter={(val) => formatUSDC(val as number)}
+            valueStyle={valueStyle}
+            formatter={(val) => formatCompactUSDC(val as number)}
             prefix={<RiseOutlined style={{ color: token.colorWarning }} />}
           />
         </Card>
@@ -78,6 +83,7 @@ export const OverviewStats: React.FC<OverviewStatsProps> = ({ data, isLoading, e
           <Statistic
             title="Success Rate"
             value={data.transactions.success_rate}
+            valueStyle={valueStyle}
             formatter={(val) => formatPercent(val as number)}
             prefix={<CheckCircleOutlined style={{ color: token.colorSuccess }} />}
           />
@@ -88,6 +94,7 @@ export const OverviewStats: React.FC<OverviewStatsProps> = ({ data, isLoading, e
           <Statistic
             title="D7 Retention"
             value={data.retention.d7}
+            valueStyle={valueStyle}
             formatter={(val) => formatPercent(val as number)}
             prefix={<RetweetOutlined style={{ color: token.colorPrimary }} />}
           />
@@ -98,6 +105,7 @@ export const OverviewStats: React.FC<OverviewStatsProps> = ({ data, isLoading, e
           <Statistic
             title="D30 Retention"
             value={data.retention.d30}
+            valueStyle={valueStyle}
             formatter={(val) => formatPercent(val as number)}
             prefix={<RetweetOutlined style={{ color: token.colorPrimary }} />}
           />
