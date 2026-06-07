@@ -74,7 +74,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           left: 0,
           width: 240,
           height: 'calc(100vh - 64px)',
-          background: colors.surfaceLowest,
+          background: '#13121a',
           borderRight: `1px solid ${colors.border}`,
           display: 'flex',
           flexDirection: 'column',
@@ -138,15 +138,15 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                         borderRadius: 8,
                         cursor: 'pointer',
                         marginBottom: 2,
-                        borderLeft: active ? `3px solid ${colors.primary}` : '3px solid transparent',
-                        background: active ? colors.primaryDim : 'transparent',
-                        color: active ? colors.textPrimary : colors.textSecondary,
+                        borderLeft: '3px solid transparent',
+                        background: active ? colors.primary : 'transparent',
+                        color: active ? 'white' : colors.textSecondary,
                         transition: 'background 0.15s, color 0.15s',
                       }}
                       onMouseEnter={(e) => {
                         if (!active) {
-                          (e.currentTarget as HTMLDivElement).style.background = colors.surfaceHigh;
-                          (e.currentTarget as HTMLDivElement).style.color = colors.textPrimary;
+                          (e.currentTarget as HTMLDivElement).style.background = colors.primary;
+                          (e.currentTarget as HTMLDivElement).style.color = 'white';
                         }
                       }}
                       onMouseLeave={(e) => {
