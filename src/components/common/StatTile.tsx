@@ -1,4 +1,5 @@
 import { Skeleton } from 'antd';
+import { TrendUp, TrendDown, Minus } from '@phosphor-icons/react';
 import { colors } from '@/theme';
 import { formatTrend } from '@/utils/formatMetric';
 
@@ -98,9 +99,7 @@ export function StatTile({ label, value, unit, trend, accentColor, isLoading }: 
               gap: 3,
             }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: 14 }}>
-              {trendInfo.direction === 'up' ? 'trending_up' : trendInfo.direction === 'down' ? 'trending_down' : 'remove'}
-            </span>
+            {trendInfo.direction === 'up' ? <TrendUp size={14} /> : trendInfo.direction === 'down' ? <TrendDown size={14} /> : <Minus size={14} />}
             {trendInfo.label}
           </div>
         )}

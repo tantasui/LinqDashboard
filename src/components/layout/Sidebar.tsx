@@ -1,4 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import {
+  SquaresFour, UserPlus, Lightning, ChartLine,
+  Money, Receipt, ChatCircle, ShieldCheck,
+  Users, Wallet, ChartPie, Gear,
+} from '@phosphor-icons/react';
+import type { Icon } from '@phosphor-icons/react';
 import { useAuthStore } from '@/store/authStore';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { colors } from '@/theme';
@@ -6,44 +12,44 @@ import { colors } from '@/theme';
 interface NavItem {
   key: string;
   label: string;
-  icon: string;
+  Icon: Icon;
   soon?: boolean;
 }
 
 const NAV_SECTIONS: Array<{ heading?: string; items: NavItem[] }> = [
   {
-    items: [{ key: '/overview', label: 'Overview', icon: 'dashboard' }],
+    items: [{ key: '/overview', label: 'Overview', Icon: SquaresFour }],
   },
   {
     heading: 'Acquisition',
     items: [
-      { key: '/acquisition', label: 'Users & Channels', icon: 'person_add' },
-      { key: '/activation', label: 'Activation Funnel', icon: 'bolt' },
+      { key: '/acquisition', label: 'Users & Channels', Icon: UserPlus },
+      { key: '/activation', label: 'Activation Funnel', Icon: Lightning },
     ],
   },
   {
     heading: 'Retention',
-    items: [{ key: '/retention', label: 'Retention by Cohort', icon: 'analytics' }],
+    items: [{ key: '/retention', label: 'Retention by Cohort', Icon: ChartLine }],
   },
   {
     heading: 'Economics',
     items: [
-      { key: '/revenue', label: 'Revenue', icon: 'payments' },
-      { key: '/transactions', label: 'Transactions', icon: 'receipt_long' },
-      { key: '/engagement', label: 'Engagement', icon: 'forum' },
+      { key: '/revenue', label: 'Revenue', Icon: Money },
+      { key: '/transactions', label: 'Transactions', Icon: Receipt },
+      { key: '/engagement', label: 'Engagement', Icon: ChatCircle },
     ],
   },
   {
     heading: 'Risk & Growth',
     items: [
-      { key: '/risk', label: 'Risk & Failures', icon: 'security', soon: true },
-      { key: '/referral', label: 'Referral Loop', icon: 'group', soon: true },
-      { key: '/wallet', label: 'Wallet Behavior', icon: 'account_balance_wallet', soon: true },
-      { key: '/segments', label: 'Segments', icon: 'pie_chart', soon: true },
+      { key: '/risk', label: 'Risk & Failures', Icon: ShieldCheck, soon: true },
+      { key: '/referral', label: 'Referral Loop', Icon: Users, soon: true },
+      { key: '/wallet', label: 'Wallet Behavior', Icon: Wallet, soon: true },
+      { key: '/segments', label: 'Segments', Icon: ChartPie, soon: true },
     ],
   },
   {
-    items: [{ key: '/settings', label: 'Settings', icon: 'settings' }],
+    items: [{ key: '/settings', label: 'Settings', Icon: Gear }],
   },
 ];
 
@@ -156,9 +162,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                         }
                       }}
                     >
-                      <span className="material-symbols-outlined" style={{ fontSize: 18, flexShrink: 0 }}>
-                        {item.icon}
-                      </span>
+                      <item.Icon size={18} weight={active ? 'fill' : 'regular'} style={{ flexShrink: 0 }} />
                       <span style={{ fontSize: 14, fontWeight: active ? 600 : 400, flex: 1 }}>{item.label}</span>
                       {item.soon && (
                         <span

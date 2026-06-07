@@ -35,13 +35,6 @@ body {
   background: #8a4fff;
 }
 
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  vertical-align: middle;
-}
 
 .fira-code {
   font-family: "Google Sans", sans-serif;

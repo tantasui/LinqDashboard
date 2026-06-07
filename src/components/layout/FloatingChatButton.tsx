@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Drawer } from 'antd';
+import { ChatCircle } from '@phosphor-icons/react';
 import { colors } from '@/theme';
 
 export function FloatingChatButton() {
@@ -35,9 +36,7 @@ export function FloatingChatButton() {
           e.currentTarget.style.boxShadow = '0 4px 20px rgba(138,79,255,0.40)';
         }}
       >
-        <span className="material-symbols-outlined" style={{ color: 'white', fontSize: 24 }}>
-          chat
-        </span>
+        <ChatCircle size={24} color="white" weight="fill" />
       </button>
 
       <Drawer

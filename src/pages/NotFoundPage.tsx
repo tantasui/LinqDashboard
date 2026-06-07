@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Warning } from '@phosphor-icons/react';
 import { colors } from '@/theme';
 
 export function NotFoundPage() {
@@ -15,9 +16,7 @@ export function NotFoundPage() {
         padding: 24,
       }}
     >
-      <span className="material-symbols-outlined" style={{ fontSize: 64, color: colors.textMuted }}>
-        error
-      </span>
+      <Warning size={64} style={{ color: colors.textMuted }} />
       <h1
         style={{
           fontFamily: colors.fontDisplay,

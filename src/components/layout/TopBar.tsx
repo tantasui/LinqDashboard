@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { DatePicker, Badge, Drawer } from 'antd';
+import { List, X, CalendarBlank, Bell } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
 import { useDashboardStore } from '@/store/dashboardStore';
 import { useAuthStore } from '@/store/authStore';
@@ -91,9 +92,7 @@ export function TopBar({ sidebarOpen, onToggleSidebar }: TopBarProps) {
             color: sidebarOpen ? colors.primary : colors.textSecondary,
           }}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-            {sidebarOpen ? 'menu_open' : 'menu'}
-          </span>
+          {sidebarOpen ? <X size={20} /> : <List size={20} />}
         </button>
 
         {/* Page title */}
@@ -132,7 +131,7 @@ export function TopBar({ sidebarOpen, onToggleSidebar }: TopBarProps) {
               color: colors.textSecondary,
             }}
           >
-            <span className="material-symbols-outlined" style={{ fontSize: 20 }}>calendar_month</span>
+            <CalendarBlank size={20} />
           </button>
         ) : (
           <RangePicker
@@ -146,12 +145,7 @@ export function TopBar({ sidebarOpen, onToggleSidebar }: TopBarProps) {
 
         {/* Notifications */}
         <Badge count={3} size="small">
-          <span
-            className="material-symbols-outlined"
-            style={{ fontSize: 22, color: colors.textSecondary, cursor: 'pointer' }}
-          >
-            notifications
-          </span>
+          <Bell size={22} style={{ color: colors.textSecondary, cursor: 'pointer', display: 'block' }} />
         </Badge>
 
         {/* Admin name — hidden on mobile */}
