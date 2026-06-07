@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Retention Analytics | Modern Sovereign</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Source+Sans+3:wght@400;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#eaddff",
+                    "primary-container": "#8a4fff",
+                    "on-tertiary": "#472a00",
+                    "tertiary": "#ffb95f",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-container": "#ffffff",
+                    "secondary-fixed-dim": "#ffb59d",
+                    "surface-variant": "#383051",
+                    "secondary-container": "#b43700",
+                    "primary-fixed-dim": "#d1bcff",
+                    "on-surface": "#e8deff",
+                    "on-surface-variant": "#ccc3d8",
+                    "surface-container": "#221a3a",
+                    "tertiary-fixed": "#ffddb8",
+                    "inverse-surface": "#e8deff",
+                    "on-background": "#e8deff",
+                    "surface-bright": "#3c3456",
+                    "background": "#150e2d",
+                    "on-primary": "#3d008f",
+                    "on-primary-container": "#ffffff",
+                    "on-primary-fixed": "#24005b",
+                    "surface": "#150e2d",
+                    "surface-container-highest": "#383051",
+                    "secondary": "#ffb59d",
+                    "on-error": "#690005",
+                    "outline-variant": "#4a4455",
+                    "outline": "#958da1",
+                    "surface-container-lowest": "#100828",
+                    "on-secondary-fixed-variant": "#832600",
+                    "on-tertiary-fixed-variant": "#653e00",
+                    "primary": "#d1bcff",
+                    "tertiary-container": "#a66900",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#2d2545",
+                    "inverse-primary": "#712fe5",
+                    "error": "#ffb4ab",
+                    "on-secondary-container": "#ffd8cc",
+                    "on-secondary-fixed": "#390c00",
+                    "on-primary-fixed-variant": "#5800c8",
+                    "on-secondary": "#5d1800",
+                    "surface-tint": "#d1bcff",
+                    "inverse-on-surface": "#332b4c",
+                    "surface-dim": "#150e2d",
+                    "secondary-fixed": "#ffdbd0",
+                    "tertiary-fixed-dim": "#ffb95f",
+                    "surface-container-low": "#1e1636",
+                    "on-tertiary-fixed": "#2a1700"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "xl": "32px",
+                    "unit": "4px",
+                    "margin-desktop": "40px",
+                    "gutter": "20px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Playfair Display"],
+                    "numeric-data": ["JetBrains Mono"],
+                    "body-lg": ["Source Sans 3"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-sm": ["Source Sans 3"],
+                    "numeric-sm": ["JetBrains Mono"],
+                    "label-bold": ["Source Sans 3"],
+                    "body-md": ["Source Sans 3"],
+                    "headline-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "numeric-data": ["16px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "numeric-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            vertical-align: middle;
+        }
+        .glass-card {
+            background: rgba(19, 17, 26, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #2D2640;
+        }
+        .metric-accent-top {
+            border-top: 2px solid #8a4fff;
+        }
+        .zebra-row:nth-child(even) {
+            background-color: rgba(45, 37, 69, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden">
+<!-- Navigation Drawer -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-lowest border-r border-outline-variant flex flex-col py-lg z-40">
+<div class="px-md mb-xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<span class="font-headline-md text-headline-md font-bold text-primary">Sovereign</span>
+</div>
+<nav class="flex-1 px-sm space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-bold text-label-bold">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+<span class="font-label-bold text-label-bold">Acquisition</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="font-label-bold text-label-bold">Activation</span>
+</a>
+<!-- Active Tab: Retention -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-primary-container bg-primary-container rounded-lg opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-bold text-label-bold">Retention</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-bold text-label-bold">Revenue</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-bold text-label-bold">Transactions</span>
+</a>
+</nav>
+<div class="mt-auto px-md pt-lg border-t border-outline-variant">
+<div class="flex items-center gap-3 mb-4">
+<img alt="Admin User Avatar" class="w-8 h-8 rounded-full bg-surface-container-highest" data-alt="A close-up portrait of a professional African fintech executive, wearing a sleek black turtleneck against a dark violet gradient background. The lighting is dramatic and high-contrast, reflecting a premium and authoritative sovereign brand identity. The digital art style is sharp, clean, and modern, utilizing the deep purples and blacks of the dashboard palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7e5zpludDC2KU_CmnKIfEmJHbuUXlcadCHjfpF7DvUfg4jZs0CKQE9aI7207B71EbhijfiGFupLNwBJpEd_k1b5wAO6MMX_SgaWQJj63C8eBNcFBqxKtnfZXO7jn9NzT1y4Sqi27HEa7-Ghtjp8BSZ0H108HKiHc91MX1WggUOgLm7ls0WluHQvAf8IB9ZzM6xobUEkUChT2zA3u-FHf97G-FqdAEEHEmVRXNQXaoaK_uK0Spkk7VfAWOh5Aj4zSmDhHRV0MG_ML0"/>
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Fintech Admin</p>
+<p class="text-[10px] text-on-surface-variant opacity-70">Sovereign Tier • Nigeria</p>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-[240px] min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center h-16 px-margin-desktop sticky top-0 z-30 bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="menu">menu</span>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">Retention Overview</h1>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-lg border border-outline-variant cursor-pointer hover:border-primary transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-bold text-label-bold text-on-surface">Select Date</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer" data-icon="notifications">notifications</span>
+</div>
+</header>
+<!-- Content Area -->
+<section class="p-margin-desktop space-y-lg flex-1">
+<!-- Quick KPI Bento -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-lg">
+<div class="glass-card p-md rounded-xl metric-accent-top group hover:border-outline transition-all">
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-1">Average D30</p>
+<div class="flex items-end gap-2">
+<span class="font-display-lg text-[32px] text-on-surface font-numeric-data">24.8%</span>
+<span class="text-tertiary font-numeric-sm mb-1 flex items-center">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span> 1.2%
+                        </span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl border-outline-variant group hover:border-outline transition-all">
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-1">Churn Rate</p>
+<div class="flex items-end gap-2">
+<span class="font-display-lg text-[32px] text-on-surface font-numeric-data">3.1%</span>
+<span class="text-error font-numeric-sm mb-1 flex items-center">
+<span class="material-symbols-outlined text-xs" data-icon="trending_down">trending_down</span> 0.4%
+                        </span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl border-outline-variant group hover:border-outline transition-all">
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-1">Stickiness (DAU/MAU)</p>
+<div class="flex items-end gap-2">
+<span class="font-display-lg text-[32px] text-on-surface font-numeric-data">42.5%</span>
+</div>
+</div>
+<div class="glass-card p-md rounded-xl border-outline-variant group hover:border-outline transition-all">
+<p class="font-label-bold text-label-bold text-on-surface-variant mb-1">LTV Forecast</p>
+<div class="flex items-end gap-2">
+<span class="font-display-lg text-[32px] text-on-surface font-numeric-data">₦18.4k</span>
+</div>
+</div>
+</div>
+<!-- Main Cohort Table Container -->
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-container">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Retention by Cohort</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">User behavior tracking across first 30 days of lifecycle.</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-bold text-label-bold hover:opacity-90 transition-opacity">Export CSV</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 text-on-surface-variant uppercase tracking-wider">
+<th class="px-lg py-4 font-label-bold text-label-bold border-b border-outline-variant">Cohort Month</th>
+<th class="px-lg py-4 font-label-bold text-label-bold border-b border-outline-variant text-right">Size</th>
+<th class="px-lg py-4 font-label-bold text-label-bold border-b border-outline-variant text-right">D7 Retention</th>
+<th class="px-lg py-4 font-label-bold text-label-bold border-b border-outline-variant text-right">D30 Retention</th>
+<th class="px-lg py-4 font-label-bold text-label-bold border-b border-outline-variant text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- January -->
+<tr class="zebra-row hover:bg-primary/5 transition-colors group">
+<td class="px-lg py-4 font-body-md text-on-surface">January 2024</td>
+<td class="px-lg py-4 font-numeric-data text-right text-on-surface">12,450</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-green-500/10 text-green-400 px-2 py-1 rounded text-xs font-numeric-data">40% <span class="material-symbols-outlined text-[10px]" data-icon="arrow_upward">arrow_upward</span></span>
+</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-green-500/10 text-green-400 px-2 py-1 rounded text-xs font-numeric-data">22% <span class="material-symbols-outlined text-[10px]" data-icon="arrow_upward">arrow_upward</span></span>
+</td>
+<td class="px-lg py-4 text-center">
+<span class="w-2 h-2 rounded-full bg-green-500 inline-block shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+</td>
+</tr>
+<!-- February - REGRESSION FOCUS -->
+<tr class="bg-error-container/10 border-l-4 border-error hover:bg-error-container/20 transition-colors group relative">
+<td class="px-lg py-4 font-body-md text-on-surface font-semibold">February 2024</td>
+<td class="px-lg py-4 font-numeric-data text-right text-on-surface">14,800</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-error/20 text-error px-2 py-1 rounded text-xs font-numeric-data animate-pulse">15% <span class="material-symbols-outlined text-[10px]" data-icon="trending_down">trending_down</span></span>
+</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-error/20 text-error px-2 py-1 rounded text-xs font-numeric-data animate-pulse">8% <span class="material-symbols-outlined text-[10px]" data-icon="trending_down">trending_down</span></span>
+</td>
+<td class="px-lg py-4 text-center">
+<div class="bg-error text-on-error text-[10px] font-label-bold px-2 py-0.5 rounded-full uppercase tracking-tighter">Regression</div>
+</td>
+</tr>
+<!-- March -->
+<tr class="zebra-row hover:bg-primary/5 transition-colors group">
+<td class="px-lg py-4 font-body-md text-on-surface">March 2024</td>
+<td class="px-lg py-4 font-numeric-data text-right text-on-surface">11,200</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-green-500/10 text-green-400 px-2 py-1 rounded text-xs font-numeric-data">33% <span class="material-symbols-outlined text-[10px]" data-icon="arrow_upward">arrow_upward</span></span>
+</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-tertiary/10 text-tertiary px-2 py-1 rounded text-xs font-numeric-data">18% <span class="material-symbols-outlined text-[10px]" data-icon="horizontal_rule">horizontal_rule</span></span>
+</td>
+<td class="px-lg py-4 text-center">
+<span class="w-2 h-2 rounded-full bg-tertiary inline-block"></span>
+</td>
+</tr>
+<!-- April -->
+<tr class="zebra-row hover:bg-primary/5 transition-colors group">
+<td class="px-lg py-4 font-body-md text-on-surface">April 2024</td>
+<td class="px-lg py-4 font-numeric-data text-right text-on-surface">13,900</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-tertiary/10 text-tertiary px-2 py-1 rounded text-xs font-numeric-data">28% <span class="material-symbols-outlined text-[10px]" data-icon="remove">remove</span></span>
+</td>
+<td class="px-lg py-4 text-right">
+<span class="text-on-surface-variant opacity-40 italic font-numeric-sm">-</span>
+</td>
+<td class="px-lg py-4 text-center">
+<span class="w-2 h-2 rounded-full bg-outline inline-block"></span>
+</td>
+</tr>
+<!-- May -->
+<tr class="zebra-row hover:bg-primary/5 transition-colors group">
+<td class="px-lg py-4 font-body-md text-on-surface">May 2024</td>
+<td class="px-lg py-4 font-numeric-data text-right text-on-surface">15,320</td>
+<td class="px-lg py-4 text-right">
+<span class="inline-flex items-center gap-1 bg-tertiary/10 text-tertiary px-2 py-1 rounded text-xs font-numeric-data">19% <span class="material-symbols-outlined text-[10px]" data-icon="pending">pending</span></span>
+</td>
+<td class="px-lg py-4 text-right">
+<span class="text-on-surface-variant opacity-40 italic font-numeric-sm">-</span>
+</td>
+<td class="px-lg py-4 text-center">
+<span class="w-2 h-2 rounded-full bg-outline-variant inline-block"></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Visualization Section -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<div class="glass-card p-lg rounded-xl lg:col-span-2">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Cohort Health Trend</h3>
+<div class="flex gap-2 bg-surface-container rounded-lg p-1">
+<button class="px-3 py-1 text-xs font-label-bold bg-primary-container text-on-primary-container rounded shadow-sm">Linear</button>
+<button class="px-3 py-1 text-xs font-label-bold text-on-surface-variant hover:text-on-surface transition-colors">Cumulative</button>
+</div>
+</div>
+<div class="h-64 flex items-end justify-between gap-4 px-4 pb-8 border-b border-l border-outline-variant/30 relative">
+<!-- Abstract Wave Representation -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+<div class="w-full h-1/2 bg-gradient-to-t from-primary-container/20 to-transparent blur-2xl"></div>
+</div>
+<div class="w-full flex items-end justify-between h-full relative z-10">
+<div class="w-8 bg-primary rounded-t-sm" style="height: 60%"></div>
+<div class="w-8 bg-error rounded-t-sm animate-pulse" style="height: 35%"></div>
+<div class="w-8 bg-primary/70 rounded-t-sm" style="height: 55%"></div>
+<div class="w-8 bg-primary/50 rounded-t-sm" style="height: 50%"></div>
+<div class="w-8 bg-primary/30 rounded-t-sm" style="height: 40%"></div>
+</div>
+</div>
+<div class="flex justify-between px-4 mt-2">
+<span class="text-[10px] text-on-surface-variant font-numeric-sm uppercase">Jan</span>
+<span class="text-[10px] text-error font-numeric-sm uppercase">Feb (Dip)</span>
+<span class="text-[10px] text-on-surface-variant font-numeric-sm uppercase">Mar</span>
+<span class="text-[10px] text-on-surface-variant font-numeric-sm uppercase">Apr</span>
+<span class="text-[10px] text-on-surface-variant font-numeric-sm uppercase">May</span>
+</div>
+</div>
+<div class="glass-card p-lg rounded-xl">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-md">Retention Leakage</h3>
+<div class="space-y-4">
+<div class="flex flex-col">
+<div class="flex justify-between text-body-sm mb-1">
+<span class="text-on-surface-variant">KYC Dropout</span>
+<span class="text-on-surface font-numeric-sm">22%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 22%"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex justify-between text-body-sm mb-1">
+<span class="text-on-surface-variant">Payment Failure</span>
+<span class="text-on-surface font-numeric-sm">18%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 18%"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex justify-between text-body-sm mb-1">
+<span class="text-on-surface-variant">App Latency</span>
+<span class="text-on-surface font-numeric-sm">9%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 9%"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-primary-container/10 border border-primary-container/30 rounded-lg">
+<p class="text-xs text-primary leading-relaxed">
+<span class="material-symbols-outlined text-sm align-middle mr-1" data-icon="lightbulb">lightbulb</span>
+                            Users from the Feb cohort experienced 2.5x higher KYC latency due to bank API downtime. Recommend targeted re-engagement.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="fixed bottom-md right-md z-50 flex items-center justify-end gap-md">
+<span class="font-body-sm text-body-sm text-secondary">© 2024 Modern Sovereign Admin</span>
+<div class="flex gap-4">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Help Center</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-opacity duration-200" href="#">Privacy Policy</a>
+</div>
+</footer>
+</main>
+<script>
+        // Micro-interactions for table rows
+        document.querySelectorAll('.zebra-row').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Atmospheric shimmer effect on February regression row
+        const regressionRow = document.querySelector('.bg-error-container\\/10');
+        if (regressionRow) {
+            setInterval(() => {
+                regressionRow.classList.toggle('opacity-90');
+            }, 1500);
+        }
+    </script>
+</body></html>
