@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useMetricFetch } from '@/hooks/useMetricFetch';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { getTransactions } from '@/api/endpoints';
 import { SectionCard } from '@/components/common/SectionCard';
 import { StatTile } from '@/components/common/StatTile';
@@ -13,20 +14,10 @@ import { toApiDateRange } from '@/utils/dates';
 import type { FailureRow } from '@/constants/mockData';
 
 const failureColumns: ColumnsType<FailureRow> = [
+  { title: 'Reason', dataIndex: 'reason', key: 'reason', render: (v: string) => <span className="fira-code" style={{ color: colors.textPrimary }}>{v}</span> },
+  { title: 'Count', dataIndex: 'count', key: 'count', render: (v: number) => <span style={{ color: colors.textSecondary }}>{v.toLocaleString()}</span> },
   {
-    title: 'Reason',
-    dataIndex: 'reason',
-    key: 'reason',
-    render: (v: string) => <span className="fira-code" style={{ color: colors.textPrimary }}>{v}</span>,
-  },
-  {
-    title: 'Count',
-    dataIndex: 'count',
-    key: 'count',
-    render: (v: number) => <span style={{ color: colors.textSecondary }}>{v.toLocaleString()}</span>,
-  },
-  {
-    title: '% of Failures',
+    title: '%',
     dataIndex: 'percentage',
     key: 'percentage',
     render: (v: number) => {
@@ -39,47 +30,38 @@ const failureColumns: ColumnsType<FailureRow> = [
 export function TransactionsPage() {
   const { dateRange } = useDashboardStore();
   const { from, to } = toApiDateRange(dateRange);
+  const { isMobile, isTablet } = useBreakpoint();
 
   const fetcher = useCallback(() => getTransactions(from, to), [from, to]);
   const { data, loading } = useMetricFetch(fetcher);
 
+  const bottomCols = isMobile || isTablet ? '1fr' : '3fr 2fr';
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {/* Volume chart */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <SectionCard title="Transaction Volume" subtitle="Offramp / Bill Payment / Onramp" loading={loading}>
-        <BarChart data={data?.volumeSeries ?? []} height={300} />
+        <BarChart data={data?.volumeSeries ?? []} height={isMobile ? 200 : 300} />
       </SectionCard>
 
-      {/* Failure table + processing time */}
-      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: bottomCols, gap: 16 }}>
         <SectionCard title="Failure Breakdown" loading={loading}>
-          <Table<FailureRow>
-            dataSource={data?.failures ?? []}
-            columns={failureColumns}
-            pagination={false}
-            rowKey="key"
-            size="small"
-            style={{ background: 'transparent' }}
-          />
+          <div style={{ overflowX: 'auto' }}>
+            <Table<FailureRow>
+              dataSource={data?.failures ?? []}
+              columns={failureColumns}
+              pagination={false}
+              rowKey="key"
+              size="small"
+              scroll={{ x: 340 }}
+              style={{ background: 'transparent' }}
+            />
+          </div>
         </SectionCard>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <StatTile
-            label="Avg Processing Time"
-            value={data ? formatSeconds(data.avgProcessingSeconds) : null}
-            trend={data?.processingTrend}
-            accentColor={colors.secondary}
-            isLoading={loading}
-          />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <StatTile label="Avg Processing Time" value={data ? formatSeconds(data.avgProcessingSeconds) : null} trend={data?.processingTrend} accentColor={colors.secondary} isLoading={loading} />
           {data && !loading && (
-            <div
-              style={{
-                background: colors.surface,
-                border: `1px solid ${colors.border}`,
-                borderRadius: 12,
-                padding: '16px 20px',
-              }}
-            >
+            <div style={{ background: colors.surface, border: `1px solid ${colors.border}`, borderRadius: 12, padding: '16px 20px' }}>
               <div style={{ fontSize: 11, color: colors.textMuted, marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Percentiles
               </div>
@@ -90,9 +72,7 @@ export function TransactionsPage() {
               ].map(({ label, value }) => (
                 <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <span style={{ fontSize: 13, color: colors.textSecondary }}>{label}</span>
-                  <span style={{ fontFamily: colors.fontMono, fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>
-                    {formatSeconds(value)}
-                  </span>
+                  <span style={{ fontFamily: colors.fontMono, fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>{formatSeconds(value)}</span>
                 </div>
               ))}
             </div>

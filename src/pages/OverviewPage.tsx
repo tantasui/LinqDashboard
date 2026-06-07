@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Table, Tag } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { useMetricFetch } from '@/hooks/useMetricFetch';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { getOverview, getRetentionSummary } from '@/api/endpoints';
 import { SectionCard } from '@/components/common/SectionCard';
 import { StatTile } from '@/components/common/StatTile';
@@ -36,92 +37,54 @@ const cohortColumns: ColumnsType<CohortRow> = [
     render: (v: number | null) =>
       v != null ? <StatusChip label={formatPercent(v)} status={getD30Status(v)} /> : <span style={{ color: colors.textMuted }}>—</span>,
   },
-  {
-    title: 'Status',
-    dataIndex: 'status',
-    key: 'status',
-    render: (v: string) => {
-      const map: Record<string, { label: string; status: 'success' | 'warning' | 'error' | 'neutral' }> = {
-        healthy: { label: 'Healthy', status: 'success' },
-        warning: { label: 'Warning', status: 'warning' },
-        regression: { label: 'Regression', status: 'error' },
-        pending: { label: 'Pending', status: 'neutral' },
-      };
-      const item = map[v] ?? { label: v, status: 'neutral' as const };
-      return <StatusChip label={item.label} status={item.status} />;
-    },
-  },
 ];
 
 export function OverviewPage() {
+  const { isMobile, isTablet } = useBreakpoint();
+
   const overviewFetcher = useCallback(() => getOverview(), []);
   const retentionFetcher = useCallback(() => getRetentionSummary('', ''), []);
 
   const { data: overview, loading: ovLoading } = useMetricFetch(overviewFetcher);
   const { data: retention, loading: retLoading } = useMetricFetch(retentionFetcher);
 
+  const statCols = isMobile ? 'repeat(2, 1fr)' : isTablet ? 'repeat(3, 1fr)' : 'repeat(5, 1fr)';
+  const chartCols = isMobile || isTablet ? '1fr' : '3fr 2fr';
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Stat tiles */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 16 }}>
-        <StatTile
-          label="New Signups"
-          value={overview ? formatNumber(overview.newSignups) : null}
-          trend={overview?.newSignupsTrend}
-          accentColor={colors.secondary}
-          isLoading={ovLoading}
-        />
-        <StatTile
-          label="GMV"
-          value={overview ? formatCurrency(overview.gmv) : null}
-          trend={overview?.gmvTrend}
-          accentColor={colors.primary}
-          isLoading={ovLoading}
-        />
-        <StatTile
-          label="Revenue"
-          value={overview ? formatCurrency(overview.revenue) : null}
-          trend={overview?.revenueTrend}
-          accentColor={colors.success}
-          isLoading={ovLoading}
-        />
-        <StatTile
-          label="Success Rate"
-          value={overview ? formatPercent(overview.transactionSuccessRate) : null}
-          trend={overview?.successRateTrend}
-          accentColor={colors.success}
-          isLoading={ovLoading}
-        />
-        <StatTile
-          label="D30 Retention"
-          value={overview ? formatPercent(overview.d30Retention) : null}
-          trend={overview?.d30RetentionTrend}
-          accentColor={colors.warning}
-          isLoading={ovLoading}
-        />
+      <div style={{ display: 'grid', gridTemplateColumns: statCols, gap: 12 }}>
+        <StatTile label="New Signups" value={overview ? formatNumber(overview.newSignups) : null} trend={overview?.newSignupsTrend} accentColor={colors.secondary} isLoading={ovLoading} />
+        <StatTile label="GMV" value={overview ? formatCurrency(overview.gmv) : null} trend={overview?.gmvTrend} accentColor={colors.primary} isLoading={ovLoading} />
+        <StatTile label="Revenue" value={overview ? formatCurrency(overview.revenue) : null} trend={overview?.revenueTrend} accentColor={colors.success} isLoading={ovLoading} />
+        <StatTile label="Success Rate" value={overview ? formatPercent(overview.transactionSuccessRate) : null} trend={overview?.successRateTrend} accentColor={colors.success} isLoading={ovLoading} />
+        <StatTile label="D30 Retention" value={overview ? formatPercent(overview.d30Retention) : null} trend={overview?.d30RetentionTrend} accentColor={colors.warning} isLoading={ovLoading} />
       </div>
 
       {/* Charts row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: chartCols, gap: 16 }}>
         <SectionCard title="Transaction Trend" loading={ovLoading}>
-          <LineChart data={MOCK_ACQUISITION.series} height={260} />
+          <LineChart data={MOCK_ACQUISITION.series} height={isMobile ? 200 : 260} />
         </SectionCard>
 
         <SectionCard title="Retention Snapshot" loading={retLoading}>
           {retention && (
-            <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
               <Tag color="success">Avg D30: {formatPercent(retention.averageD30)}</Tag>
               <Tag color="warning">Churn: {formatPercent(retention.churnRate)}</Tag>
             </div>
           )}
-          <Table<CohortRow>
-            dataSource={retention?.cohorts.slice(0, 4) ?? []}
-            columns={cohortColumns}
-            size="small"
-            pagination={false}
-            rowKey="key"
-            style={{ background: 'transparent' }}
-          />
+          <div style={{ overflowX: 'auto' }}>
+            <Table<CohortRow>
+              dataSource={retention?.cohorts.slice(0, 4) ?? []}
+              columns={cohortColumns}
+              size="small"
+              pagination={false}
+              rowKey="key"
+              style={{ background: 'transparent' }}
+            />
+          </div>
         </SectionCard>
       </div>
     </div>

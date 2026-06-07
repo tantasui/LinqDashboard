@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useMetricFetch } from '@/hooks/useMetricFetch';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { getRevenue } from '@/api/endpoints';
 import { SectionCard } from '@/components/common/SectionCard';
 import { StatTile } from '@/components/common/StatTile';
@@ -13,17 +14,18 @@ import { Skeleton } from 'antd';
 export function RevenuePage() {
   const { dateRange } = useDashboardStore();
   const { from, to } = toApiDateRange(dateRange);
+  const { isMobile } = useBreakpoint();
 
   const fetcher = useCallback(() => getRevenue(from, to), [from, to]);
   const { data, loading } = useMetricFetch(fetcher);
 
   const chartData = (data?.series ?? []).map((p) => ({ date: p.date, value: p.revenue, series: 'Revenue' }));
-
   const trendInfo = data ? formatTrend(data.arpuTrend ?? null) : null;
 
+  const kpiCols = isMobile ? '1fr' : 'repeat(3, 1fr)';
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {/* Revenue chart */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <SectionCard
         title="Revenue Over Time"
         subtitle={trendInfo ? `${trendInfo.label} vs prior period` : undefined}
@@ -37,7 +39,7 @@ export function RevenuePage() {
             xField="date"
             yField="value"
             colorField="series"
-            height={300}
+            height={isMobile ? 200 : 300}
             autoFit
             smooth
             color={[colors.primary]}
@@ -51,29 +53,10 @@ export function RevenuePage() {
         )}
       </SectionCard>
 
-      {/* KPI tiles */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-        <StatTile
-          label="ARPU"
-          value={data ? `$${data.arpu.toFixed(2)}` : null}
-          trend={data?.arpuTrend}
-          accentColor={colors.primary}
-          isLoading={loading}
-        />
-        <StatTile
-          label="RPAU"
-          value={data ? `$${data.rpau.toFixed(2)}` : null}
-          trend={data?.rpauTrend}
-          accentColor={colors.secondary}
-          isLoading={loading}
-        />
-        <StatTile
-          label="Take Rate"
-          value={data ? formatPercent(data.takeRatePercent) : null}
-          unit={data?.trendLabel}
-          accentColor={colors.success}
-          isLoading={loading}
-        />
+      <div style={{ display: 'grid', gridTemplateColumns: kpiCols, gap: 12 }}>
+        <StatTile label="ARPU" value={data ? `$${data.arpu.toFixed(2)}` : null} trend={data?.arpuTrend} accentColor={colors.primary} isLoading={loading} />
+        <StatTile label="RPAU" value={data ? `$${data.rpau.toFixed(2)}` : null} trend={data?.rpauTrend} accentColor={colors.secondary} isLoading={loading} />
+        <StatTile label="Take Rate" value={data ? formatPercent(data.takeRatePercent) : null} unit={data?.trendLabel} accentColor={colors.success} isLoading={loading} />
       </div>
     </div>
   );

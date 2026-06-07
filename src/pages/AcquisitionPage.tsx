@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Radio, Progress } from 'antd';
 import type { RadioChangeEvent } from 'antd';
 import { useMetricFetch } from '@/hooks/useMetricFetch';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { getAcquisition } from '@/api/endpoints';
 import { SectionCard } from '@/components/common/SectionCard';
 import { StatTile } from '@/components/common/StatTile';
@@ -18,27 +19,19 @@ export function AcquisitionPage() {
   const [granularity, setGranularity] = useState<Granularity>('daily');
   const { dateRange } = useDashboardStore();
   const { from, to } = toApiDateRange(dateRange);
+  const { isMobile, isTablet } = useBreakpoint();
 
-  const fetcher = useCallback(
-    () => getAcquisition(from, to, granularity),
-    [from, to, granularity]
-  );
+  const fetcher = useCallback(() => getAcquisition(from, to, granularity), [from, to, granularity]);
   const { data, loading } = useMetricFetch(fetcher);
 
+  const bottomCols = isMobile || isTablet ? '1fr' : '5fr 7fr';
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {/* Summary tile */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ maxWidth: 240 }}>
-        <StatTile
-          label="Total Signups"
-          value={data ? formatNumber(data.totalSignups) : null}
-          trend={data?.signupsTrend}
-          accentColor={colors.secondary}
-          isLoading={loading}
-        />
+        <StatTile label="Total Signups" value={data ? formatNumber(data.totalSignups) : null} trend={data?.signupsTrend} accentColor={colors.secondary} isLoading={loading} />
       </div>
 
-      {/* Main chart */}
       <SectionCard
         title="User Acquisition"
         loading={loading}
@@ -51,16 +44,15 @@ export function AcquisitionPage() {
             buttonStyle="solid"
           >
             <Radio.Button value="daily">Daily</Radio.Button>
-            <Radio.Button value="weekly">Weekly</Radio.Button>
+            {!isMobile && <Radio.Button value="weekly">Weekly</Radio.Button>}
             <Radio.Button value="monthly">Monthly</Radio.Button>
           </Radio.Group>
         }
       >
-        <LineChart data={data?.series ?? []} height={300} />
+        <LineChart data={data?.series ?? []} height={isMobile ? 200 : 300} />
       </SectionCard>
 
-      {/* Donut + funnel bars */}
-      <div style={{ display: 'grid', gridTemplateColumns: '5fr 7fr', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: bottomCols, gap: 16 }}>
         <SectionCard title="Channel Breakdown" loading={loading}>
           <DonutChart data={data?.channels ?? []} />
         </SectionCard>
@@ -71,9 +63,7 @@ export function AcquisitionPage() {
               <div key={ch.channel}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
                   <span style={{ fontSize: 14, color: colors.textSecondary }}>{ch.channel}</span>
-                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>
-                    {ch.percentage.toFixed(1)}%
-                  </span>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: colors.textPrimary }}>{ch.percentage.toFixed(1)}%</span>
                 </div>
                 <Progress
                   percent={ch.percentage}

@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { colors } from '@/theme';
 
 interface NavItem {
@@ -48,11 +49,13 @@ const NAV_SECTIONS: Array<{ heading?: string; items: NavItem[] }> = [
 
 interface SidebarProps {
   open: boolean;
+  onClose: () => void;
 }
 
-export function Sidebar({ open }: SidebarProps) {
+export function Sidebar({ open, onClose }: SidebarProps) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { isDesktop } = useBreakpoint();
   const admin = useAuthStore((s) => s.admin);
 
   const initials = admin?.name
@@ -64,20 +67,6 @@ export function Sidebar({ open }: SidebarProps) {
 
   return (
     <>
-      {/* Overlay when sidebar is open on narrow viewports (optional UX) */}
-      <div
-        style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 99,
-          background: 'rgba(0,0,0,0.4)',
-          opacity: open ? 1 : 0,
-          pointerEvents: open ? 'auto' : 'none',
-          transition: 'opacity 0.25s ease',
-          display: 'none', // only show at narrow widths if desired
-        }}
-      />
-
       <div
         style={{
           position: 'fixed',
@@ -140,7 +129,7 @@ export function Sidebar({ open }: SidebarProps) {
                   return (
                     <div
                       key={item.key}
-                      onClick={() => navigate(item.key)}
+                      onClick={() => { navigate(item.key); if (!isDesktop) onClose(); }}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
