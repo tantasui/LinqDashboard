@@ -23,7 +23,7 @@ const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve,
 
 export async function login(email: string, password: string): Promise<LoginResponse> {
   await delay(300);
-  if (email === 'admin@linq.so' && password === 'admin') return MOCK_LOGIN;
+  if (email.trim().toLowerCase() === 'admin@linq.so' && password.trim() === 'admin') return MOCK_LOGIN;
   throw new Error('Invalid credentials');
 }
 
